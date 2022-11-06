@@ -1,53 +1,64 @@
+#include <stdlib.h>
 #include "lists.h"
-
+#include <string.h>
+#include <stdio.h>
 /**
- * add_node_end - adds a node at the end of the linked list
+ * add_node_end - adds new node at end
+ * @head: previous node
+ * @str: string data
  *
- * @head: pointer to the first node of the list
- * @str: string to add
- *
- * Return: NULL if it fails / starting addr of the list
-*/
+ * Return: address of new node
+ */
 
 list_t *add_node_end(list_t **head, const char *str)
 {
-	list_t *new_node, *temp;
-	size_t str_len = 0;
+	list_t *new_list, *temp;
 
-	/*set strig length to 0 if its NULL*/
-	if (str == NULL)
-		str_len = 0;
-
-	/*count length of string*/
-	while (str[str_len] != '\0')
-		str_len++;
-
-	new_node = malloc(sizeof(list_t));
-	if (new_node == NULL)
-		return (NULL);
-
-	new_node->str = strdup(str);
-	new_node->len = str_len;
-	new_node->next = NULL;
-
-	/*copy our starting node pointer to temp*/
-	temp = *head;
-
-	/*if temp is NULL place our new_node at the beginning of the list*/
-	/*else if its not null we place our new_node to temp->next hence*/
-	/*adding our new_node at the end of the list*/
-	if (temp == NULL)
-		*head = new_node;
-	else
+	if (str != NULL)
 	{
-		/**
-		 * we iterate pointer next addr if its not NULL our temp addr
-		 * points to the next addr or the next node.
-		*/
-		while (temp->next != NULL)
-			temp = temp->next;
-		temp->next = new_node;
+		new_list = malloc(sizeof(list_t));
+		if (new_list == NULL)
+			return (NULL);
+
+		new_list->str = strdup(str);
+		new_list->len = _strlen(str);
+		new_list->next = NULL;
+
+		if (*head == NULL)
+		{
+			*head = new_list;
+			return (*head);
+		}
+		else
+		{
+			temp = *head;
+			while (temp->next)
+				temp = temp->next;
+
+			temp->next = new_list;
+			return (temp);
+		}
 	}
 
-	return (*head);
+	return (NULL);
+}
+
+/**
+ * _strlen - Returns the length
+ * @s: string
+ *
+ * Return: string length
+ */
+
+int _strlen(const char *s)
+{
+	int c = 0;
+
+	while (*s)
+	{
+		s++;
+		c++;
+	}
+
+	return (c);
 }
